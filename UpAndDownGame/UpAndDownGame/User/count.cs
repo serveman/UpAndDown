@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UpAndDownGame.User
+namespace UpAndDown.User
 {
     public struct Count
     {

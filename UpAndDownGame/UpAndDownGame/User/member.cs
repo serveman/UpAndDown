@@ -1,7 +1,7 @@
 using System;
-using UpAndDownGame;
+using UpAndDown;
 
-namespace UpAndDownGame.User
+namespace UpAndDown.User
 {
     class Member
     {
