@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D102BB08-6207-4E3C-9FE2-F2AF9354F110}</ProjectGuid>
+    <ProjectGuid>{D71C7305-AB08-4BE5-8924-0360F0807936}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>UpAndDown</RootNamespace>
     <AssemblyName>UpAndDown</AssemblyName>
@@ -43,11 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\UpAndDown.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\count.cs" />
+    <Compile Include="User\member.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="History\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
