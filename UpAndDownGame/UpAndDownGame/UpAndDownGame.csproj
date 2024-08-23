@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\Judgement.cs" />
+    <Compile Include="Game\GameUtil.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Main\UpAndDown.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
