@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 
 namespace UpAndDown.Main
 {
@@ -20,13 +20,13 @@ namespace UpAndDown.Main
 
         private void Initialize()
         {
-            // Áö±İÀº ÃÊ±âÈ­ ÇÒ °Ô ¾øÀ½
+            // ì§€ê¸ˆì€ ì´ˆê¸°í™” í•  ê²Œ ì—†ìŒ
         }
 
         private int GenerateRandomTargetValue()
         {
             //Random r = new Random(unchecked((int)DateTime.Now.Ticks));
-            Random r = new Random();    // C# 4.0ºÎÅÍ´Â ½Ãµå¸¦ ÀÔ·ÂÇÏÁö ¾Ê¾Æµµ ÃæºĞÈ÷ ¾ÈÀüÇÏ°Ô ³­¼ö¸¦ ¹ß»ıÇØÁØ´Ù. ½ÃÀÛ ½Ã Ç×»ó °°Àº ³­¼ö¸¦ ¹ß»ıÇÏ°í½ÍÀº °æ¿ì¸¸ »ç¿ë
+            Random r = new Random();    // C# 4.0ë¶€í„°ëŠ” ì‹œë“œë¥¼ ì…ë ¥í•˜ì§€ ì•Šì•„ë„ ì¶©ë¶„íˆ ì•ˆì „í•˜ê²Œ ë‚œìˆ˜ë¥¼ ë°œìƒí•´ì¤€ë‹¤. ì‹œì‘ ì‹œ í•­ìƒ ê°™ì€ ë‚œìˆ˜ë¥¼ ë°œìƒí•˜ê³ ì‹¶ì€ ê²½ìš°ë§Œ ì‚¬ìš©
             return r.Next(1, 100);
         }
     }
