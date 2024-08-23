@@ -1,15 +1,21 @@
 ﻿using System;
 using UpAndDown.Enum;
+using UpAndDown.User;
 
 namespace UpAndDown.Game
 {
     public class Game
     {
-        private int targetNumber;
+        private Count count = new Count();
+        private Member member = new Member();
+
+        private int TargetNumber { get; }
+        private int TryCount { get; set; }
 
         public Game(int targetNumber)
         {
-            this.targetNumber = targetNumber;
+            this.TargetNumber = targetNumber;
+            this.TryCount = 0;
             this.Run();
         }
 
@@ -24,7 +30,7 @@ namespace UpAndDown.Game
                 currentUserInputNumber = InputUserNumber();
 
                 // 판정
-                result = GameUtil.JudgeUpOrDownResult(userInput: currentUserInputNumber, targetValue: this.targetNumber);
+                result = GameUtil.JudgeUpOrDownResult(userInput: currentUserInputNumber, targetValue: this.TargetNumber);
                 DisplayResultMessage(result);
             } while (result != Judgement.Equal);
 
@@ -46,6 +52,7 @@ namespace UpAndDown.Game
                 Console.WriteLine("잘못된 형식입니다. 다시 입력해주세요.");
             }
 
+            this.TryCount++;
             return readUserNumber;
         }
 
@@ -56,7 +63,8 @@ namespace UpAndDown.Game
         /// <returns></returns>
         private void DisplayUserInputMessage()
         {
-            Console.Write("숫자를 입력해주세요: ");
+            Console.WriteLine();
+            Console.Write($"[{this.TryCount,3}] 숫자를 입력해주세요: ");
         }
 
         private void DisplayResultMessage(Judgement result)
