@@ -6,7 +6,7 @@
         {
             new Main.UpAndDown();
 
-            new History.History();
+            //new History.History();
         }
     }
 }

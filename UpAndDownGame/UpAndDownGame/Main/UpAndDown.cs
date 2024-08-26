@@ -1,21 +1,32 @@
 using System;
+using UpAndDown.User;
 
 namespace UpAndDown.Main
 {
     public class UpAndDown
     {
+        private readonly MemberService ms = new MemberService();
+
         public UpAndDown()
         {
             this.Initialize();
 
+            ms.ReadMemberInfomation();
+
             this.Run();
+
+            ms.UpdateMemberInformation();
         }
 
         private void Run()
         {
             int targetValue = GenerateRandomTargetValue();
 
-            Game.Game game = new Game.Game(targetValue);
+#if DEBUG
+            new Game.Game(this.ms, 50);     // 테스트를 위해 50으로 고정
+#else
+            new Game.Game(this.ms, targetValue);
+#endif
         }
 
         private void Initialize()
