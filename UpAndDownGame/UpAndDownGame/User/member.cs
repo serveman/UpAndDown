@@ -1,9 +1,7 @@
-using System;
-using UpAndDown;
 
 namespace UpAndDown.User
 {
-    class Member
+    public struct Member
     {
         public string Name { get; set; }
         public Count PlayCount { get; set; }

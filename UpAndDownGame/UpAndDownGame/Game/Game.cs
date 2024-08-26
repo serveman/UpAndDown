@@ -6,14 +6,17 @@ namespace UpAndDown.Game
 {
     public class Game
     {
-        private Count count = new Count();
         private Member member = new Member();
 
         private int TargetNumber { get; }
         private int TryCount { get; set; }
 
-        public Game(int targetNumber)
+        private readonly MemberService ms;
+
+        public Game(MemberService ms,
+                    int targetNumber)
         {
+            this.ms = ms;
             this.TargetNumber = targetNumber;
             this.TryCount = 0;
             this.Run();
@@ -21,6 +24,8 @@ namespace UpAndDown.Game
 
         private void Run()
         {
+            member = ms.GetCurrentMember();
+
             Judgement result;
             do
             {
@@ -35,7 +40,11 @@ namespace UpAndDown.Game
             } while (result != Judgement.Equal);
 
             // 종료
+            Count cnt = member.PlayCount;
+            cnt.IncreaseSuccessCount();
+            member.PlayCount = cnt;
 
+            ms.SaveCurrentMember(member);
         }
 
         /// <summary>

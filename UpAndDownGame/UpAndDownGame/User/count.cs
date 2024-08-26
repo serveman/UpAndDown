@@ -4,17 +4,14 @@ namespace UpAndDown.User
 {
     public struct Count
     {
-        private int total;
-        private int success;
-        private int failure;
+        public int Total
+        {
+            get { return Success + Failure; } 
+        }
+        public int Success { get; set; }
+        public int Failure { get; set; }
 
-        public int Total { get; }
-        public int Success { get; }
-        public int Failure { get; }
-
-        public void IncreaseSuccessCount() { this.success++; UpdateTotal(); }
-        public void IncreaseFailureCount() { this.failure++; UpdateTotal(); }
-
-        private void UpdateTotal() { total = this.success + this.failure; }
+        public void IncreaseSuccessCount() { this.Success++; }
+        public void IncreaseFailureCount() { this.Failure++; }
     }
 }
