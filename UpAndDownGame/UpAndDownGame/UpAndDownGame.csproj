@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\Judgement.cs" />
+    <Compile Include="Game\GameLevel.cs" />
     <Compile Include="Game\GameUtil.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="History\History.cs" />

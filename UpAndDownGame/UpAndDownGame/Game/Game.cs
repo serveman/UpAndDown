@@ -4,26 +4,25 @@ using UpAndDown.User;
 
 namespace UpAndDown.Game
 {
-    public class Game
+    public class Game : GameLevel
     {
         private Member member = new Member();
 
-        private int TargetNumber { get; }
         private int TryCount { get; set; }
 
         private readonly MemberService ms;
 
-        public Game(MemberService ms,
-                    int targetNumber)
+        public Game(MemberService ms)
         {
             this.ms = ms;
-            this.TargetNumber = targetNumber;
             this.TryCount = 0;
             this.Run();
         }
 
         private void Run()
         {
+            SelectGameLevel();
+
             member = ms.GetCurrentMember();
 
             Judgement result;
@@ -35,9 +34,9 @@ namespace UpAndDown.Game
                 currentUserInputNumber = InputUserNumber();
 
                 // 판정
-                result = GameUtil.JudgeUpOrDownResult(userInput: currentUserInputNumber, targetValue: this.TargetNumber);
+                result = GameUtil.JudgeUpOrDownResultMulti(userInput: currentUserInputNumber, targetValues: targetValues);
                 DisplayResultMessage(result);
-            } while (result != Judgement.Equal);
+            } while (!GameUtil.IsSolvedTargetAll(targetValues));
 
             // 종료
             Count cnt = member.PlayCount;

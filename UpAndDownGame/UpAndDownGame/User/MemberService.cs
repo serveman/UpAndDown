@@ -5,7 +5,7 @@ namespace UpAndDown.User
 {
     public class MemberService
     {
-        HashSet<Member> members = new HashSet<Member>();
+        private HashSet<Member> members = new HashSet<Member>();
 
         private Member CurrentMember { get; set; }
 
@@ -63,7 +63,7 @@ namespace UpAndDown.User
             return this.CurrentMember;
         }
 
-        internal void SaveCurrentMember(Member member)
+        public void SaveCurrentMember(Member member)
         {
             members.Remove(this.CurrentMember);
 
