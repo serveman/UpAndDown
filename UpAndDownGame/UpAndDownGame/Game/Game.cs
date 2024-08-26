@@ -64,7 +64,7 @@ namespace UpAndDown.Game
         private void DisplayUserInputMessage()
         {
             Console.WriteLine();
-            Console.Write($"[{this.TryCount,3}] 숫자를 입력해주세요: ");
+            Console.Write($"[Step{this.TryCount,3}] 숫자를 입력해주세요: ");
         }
 
         private void DisplayResultMessage(Judgement result)
