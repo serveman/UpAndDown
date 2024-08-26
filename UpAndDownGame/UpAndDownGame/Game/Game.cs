@@ -1,5 +1,4 @@
 ﻿using System;
-using UpAndDown.Enum;
 using UpAndDown.User;
 
 namespace UpAndDown.Game
@@ -28,10 +27,8 @@ namespace UpAndDown.Game
             Judgement result;
             do
             {
-                int currentUserInputNumber;
-
                 // 시작
-                currentUserInputNumber = InputUserNumber();
+                int currentUserInputNumber = InputUserNumber();
 
                 // 판정
                 result = GameUtil.JudgeUpOrDownResultMulti(userInput: currentUserInputNumber, targetValues: targetValues);
@@ -39,9 +36,9 @@ namespace UpAndDown.Game
             } while (!GameUtil.IsSolvedTargetAll(targetValues));
 
             // 종료
-            Count cnt = member.PlayCount;
+            Count cnt = member.PlayCountList[level - 1];
             cnt.IncreaseSuccessCount();
-            member.PlayCount = cnt;
+            member.PlayCountList[level - 1] = cnt;
 
             ms.SaveCurrentMember(member);
         }

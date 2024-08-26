@@ -14,12 +14,16 @@ namespace UpAndDown.Game
         protected int level = 1;
         protected HashSet<TargetValue> targetValues = new HashSet<TargetValue>();
 
+        /// <summary>
+        /// 난이도 선택
+        /// 난이도 숫자 = 목표로 해야하는 Target 의 개수
+        /// </summary>
         protected void SelectGameLevel()
         {
             int inputLevel = 0;
             do
             {
-                Console.Write("난이도를 선택해주세요(쉬움:1 ~ 5:어려움)");
+                Console.Write("난이도를 선택해주세요(쉬움:1 ~ 5:어려움): ");
             } while (!int.TryParse(Console.ReadLine(), out inputLevel) || (inputLevel < 1 || inputLevel > 5));
 
             this.level = inputLevel;

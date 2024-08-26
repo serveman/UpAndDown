@@ -23,20 +23,36 @@ namespace UpAndDown.User
                         JObject json = (JObject)JToken.ReadFrom(reader);
 
                         JArray membersArray = (JArray)json["MEMBERS"];
+                        if(membersArray == null)
+                        {
+                            throw new Exception("유저 정보가 존재하지 않습니다");
+                        }
 
                         foreach (JObject memberJson in membersArray)
                         {
+                            JArray playCountArray = (JArray)memberJson["COUNT"];
+                            if (playCountArray == null)
+                            {
+                                throw new Exception("Count 정보가 존재하지 않습니다");
+                            }
+
+                            List<Count> playCountList = new List<Count>();
+                            foreach (JObject playCountJson in playCountArray)
+                            {
+                                playCountList.Add(new Count
+                                {
+                                    Success = (int)playCountJson["SUCCESS"],
+                                    Failure = (int)playCountJson["FAILURE"]
+                                });
+                            }
+
                             Member member = new Member
                             {
-                                Name = memberJson["NAME"].ToString(),
-                                PlayCount = new Count
-                                {
-                                    Success = (int)memberJson["COUNT"]["SUCCESS"],
-                                    Failure = (int)memberJson["COUNT"]["FAILURE"]
-                                }
+                                Name = memberJson["NAME"]?.Value<string>(),
+                                PlayCountList = playCountList
                             };
 #if DEBUG
-                            Console.WriteLine($"Read: {member.Name, -12}, Total({member.PlayCount.Total}), Success({member.PlayCount.Success}), Failure({member.PlayCount.Failure})");
+                            Console.WriteLine($"Read: {member.Name, -12}");
 #endif
                             members.Add(member);
                         }
@@ -83,23 +99,29 @@ namespace UpAndDown.User
 #if DEBUG
                     foreach (Member member in members)
                     {
-                        Console.WriteLine($"Update: {member.Name, -12}, Total({member.PlayCount.Total}), Success({member.PlayCount.Success}), Failure({member.PlayCount.Failure})");
+                        Console.WriteLine($"Update: {member.Name, -12}");
                     }
 #endif
 
                     foreach (Member member in members)
                     {
-                        Count cnt = member.PlayCount;
+                        List<Count> countList = member.PlayCountList;
+                        JArray countArray = new JArray();
+                        foreach (Count count in countList)
+                        {
+                            JObject countObject = new JObject
+                            {
+                                { "SUCCESS", (int)count.Success },
+                                { "FAILURE", (int)count.Failure }
+                            };
+                            countArray.Add(countObject);
+                        }
+
                         membersArray.Add(
                             new JObject
                             {
-                            { "NAME", member.Name },
-                            { "COUNT", new JObject
-                                {
-                                    { "SUCCESS", cnt.Success },
-                                    { "FAILURE", cnt.Failure }
-                                }
-                            }
+                                { "NAME", member.Name },
+                                { "COUNT", countArray }
                             }
                         );
                     }

@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enum\Judgement.cs" />
+    <Compile Include="Game\Judgement.cs" />
     <Compile Include="Game\GameLevel.cs" />
     <Compile Include="Game\GameUtil.cs" />
     <Compile Include="Game\Game.cs" />
@@ -123,6 +123,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enum\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UpAndDown.Enum
+namespace UpAndDown.Game
 {
     public enum Judgement
     {

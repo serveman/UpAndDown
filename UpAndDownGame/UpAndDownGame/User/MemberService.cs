@@ -29,7 +29,7 @@ namespace UpAndDown.User
                     this.CurrentMember = new Member
                     {
                         Name = member.Name,
-                        PlayCount = member.PlayCount
+                        PlayCountList = member.PlayCountList
                     };
                     isExistName = true;
                 }
@@ -41,14 +41,16 @@ namespace UpAndDown.User
             }
             if(!isExistName)
             {
+                List<Count> newCountList = new List<Count>();
+                for(int i = 0; i < 5; i++)
+                {
+                    newCountList.Add(new Count { Success = 0, Failure = 0 });
+                }
+
                 this.CurrentMember = new Member
                 {
                     Name = name,
-                    PlayCount = new Count
-                    {
-                        Success = 0,
-                        Failure = 0
-                    }
+                    PlayCountList = newCountList
                 };
             }
 
