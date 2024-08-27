@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UpAndDown.Game.Enum;
+using UpAndDown.Game.Model;
 
-namespace UpAndDown.Game
+namespace UpAndDown.Core.Domain
 {
-    public class GameUtil
+    public class JudgementManager
     {
         /// <summary>
         /// 결과를 판정하는 메서드
@@ -19,7 +21,7 @@ namespace UpAndDown.Game
         /// <item><description><see cref="Judgement.Equal"/>: 입력값이 목표값과 같음.</description></item>
         /// </list>
         /// </returns>
-        public static Judgement JudgeUpOrDownResult(int userInput, int targetValue)
+        public Judgement JudgeUpOrDownResult(int userInput, int targetValue)
         {
             if (userInput == targetValue)
             {
@@ -47,51 +49,41 @@ namespace UpAndDown.Game
         /// <item><description><see cref="Judgement.Equal"/>: 입력값이 목표값과 같음.</description></item>
         /// </list>
         /// </returns>
-        public static Judgement JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValue> targetValues)
+        public Judgement JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValue> targetValues)
         {
-            TargetValue? mostCloseTarget = null;
-            int mostCloseDifference = int.MaxValue;
+            TargetValue mostCloseTarget = targetValues
+                .Where(tv => !tv.IsSolved)
+                .OrderBy(tv => Math.Abs(userInput - tv.Value))
+                .FirstOrDefault();
 
-            foreach (TargetValue tv in targetValues)
+            int mostCloseDifference = userInput - mostCloseTarget.Value;
+
+            if (mostCloseDifference == 0)
             {
-                if (tv.IsSolved) continue;
-
-                int difference = userInput - tv.Value;
-                if (Math.Abs(mostCloseDifference) > Math.Abs(difference))
+                // List 를 이용해서 값을 직접 변경하는 방법이 나은지???
+                if (targetValues.Remove(mostCloseTarget))
                 {
-                    mostCloseDifference = difference;
-                    mostCloseTarget = tv;
+                    targetValues.Add(new TargetValue { Value = mostCloseTarget.Value, IsSolved = true });
                 }
-            }
-
-            if (mostCloseTarget != null)
-            {
-                if (mostCloseDifference == 0)
+                else
                 {
-                    // List 를 이용해서 값을 직접 변경하는 방법이 나은지???
-                    if (targetValues.Remove(mostCloseTarget.Value))
-                    {
-                        targetValues.Add(new TargetValue { Value = mostCloseTarget.Value.Value, IsSolved = true });
-                    }
-                    else
-                    {
-                        throw new NotImplementedException("정상적으로 삭제가 안된다면 뭔가 잘못된 것임");
-                    }
-
-                    return Judgement.Equal;
+                    throw new InvalidOperationException("정상적으로 삭제가 안된다면 뭔가 잘못된 것임");
                 }
 
-                return mostCloseDifference > 0
-                    ? Judgement.InputIsHigherThanTarget
-                    : Judgement.InputIsLowerThanTarget;
+                return Judgement.Equal;
             }
-            else
-            {
-                throw new NotImplementedException("가장 가까운 타겟을 찾지 못했다면 뭔가 잘못된 것임");
-            }
+
+            return mostCloseDifference > 0
+                ? Judgement.InputIsHigherThanTarget
+                : Judgement.InputIsLowerThanTarget;
         }
 
-        public static bool IsSolvedTargetAll(HashSet<TargetValue> targetValues)
+        public int FindTargetRemain(HashSet<TargetValue> targetValues)
+        {
+            return targetValues.Sum(tv => tv.IsSolved == false ? 1 : 0);
+        }
+
+        public bool IsSolvedTargetAll(HashSet<TargetValue> targetValues)
         {
             return targetValues.All(tv => tv.IsSolved);
         }

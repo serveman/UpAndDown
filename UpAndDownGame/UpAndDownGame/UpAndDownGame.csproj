@@ -61,12 +61,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\Judgement.cs" />
-    <Compile Include="Game\GameLevel.cs" />
-    <Compile Include="Game\GameUtil.cs" />
-    <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\Model\TargetValue.cs" />
+    <Compile Include="Game\Enum\Judgement.cs" />
+    <Compile Include="Core\Domain\GameLevelManager.cs" />
+    <Compile Include="Core\Domain\JudgementManager.cs" />
+    <Compile Include="Service\GameService.cs" />
     <Compile Include="History\History.cs" />
-    <Compile Include="Main\UpAndDown.cs" />
+    <Compile Include="Game\UpAndDown.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -79,10 +80,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>testDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="User\MemberService.cs" />
-    <Compile Include="User\MemberIO.cs" />
-    <Compile Include="User\Count.cs" />
-    <Compile Include="User\Member.cs" />
+    <Compile Include="Service\MemberService.cs" />
+    <Compile Include="User\IO\MemberIO.cs" />
+    <Compile Include="User\Model\Count.cs" />
+    <Compile Include="User\Model\Member.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -124,8 +125,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enum\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

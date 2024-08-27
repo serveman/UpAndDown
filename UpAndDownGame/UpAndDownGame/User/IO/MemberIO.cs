@@ -60,7 +60,7 @@ namespace UpAndDown.User
                 }
 
 #if DEBUG
-                Console.WriteLine("맴버를 정상적으로 불러왔습니다");
+                Console.WriteLine("유저 목록을 정상적으로 불러왔습니다");
 #endif
             }
             catch (FileNotFoundException e)
@@ -133,7 +133,7 @@ namespace UpAndDown.User
                     sw.Write(obj);
 
 #if DEBUG
-                    Console.WriteLine("맴버를 정상적으로 저장했습니다.");
+                    Console.WriteLine("유저 목록을 정상적으로 저장했습니다.");
 #endif
                 }
             }
@@ -164,7 +164,7 @@ namespace UpAndDown.User
             {
                 FileStream fs = File.Create(MEMBER_FILENAME);
 
-                Console.WriteLine("맴버 관리용 파일을 정상적으로 생성했습니다.");
+                Console.WriteLine("유저 관리용 파일을 정상적으로 생성했습니다.");
             }
             catch (DirectoryNotFoundException e)
             {
