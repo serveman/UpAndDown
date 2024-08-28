@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UpAndDown.Game.Model;
 using UpAndDown.Interface;
 
@@ -16,7 +17,7 @@ namespace UpAndDown.Core.Domain
         private static readonly Random RandomGenerator = new Random();
 
         public int Level { get; set; }
-        public HashSet<TargetValue> TargetValuesSet { get; set; }
+        public int TargetRemains { get; set; }
 
         public int GetGuessNumberMin() => GUESS_NUMBER_MIN;
         public int GetGuessNumberMax() => GUESS_NUMBER_MAX;
@@ -28,22 +29,25 @@ namespace UpAndDown.Core.Domain
         /// 난이도 선택
         /// 난이도 숫자 = 목표로 해야하는 Target 의 개수
         /// </summary>
-        public void SelectGameLevel()
+        public void SelectGameLevel(out HashSet<TargetValue> targetValuesSet)
         {
-            int inputLevel = 0;
+            int inputLevel;
             do
             {
-                Console.Write($"난이도를 선택해주세요(쉬움:{GAME_LEVEL_MIN} ~ {GAME_LEVEL_MAX}:어려움): ");
-            } while (!int.TryParse(Console.ReadLine(), out inputLevel) || (inputLevel < GAME_LEVEL_MIN || inputLevel > GAME_LEVEL_MAX));
+                Console.Write($"난이도를 선택해주세요(쉬움:{GetGameLevelMin()} ~ {GetGameLevelMax()}:어려움): ");
+            } while (!int.TryParse(Console.ReadLine(), out inputLevel)
+                  || inputLevel < GetGameLevelMin() || inputLevel > GetGameLevelMax());
 
             this.Level = inputLevel;
 
-            TargetValuesSet = GenerateTargetValuesSet();
+            targetValuesSet = GenerateTargetValuesSet(totalTargetCount: this.Level);
         }
 
-        private HashSet<TargetValue> GenerateTargetValuesSet()
+        private HashSet<TargetValue> GenerateTargetValuesSet(int totalTargetCount)
         {
-            if(this.Level > GUESS_NUMBER_MAX - GUESS_NUMBER_MIN)
+            int maxTargetcount = GetGuessNumberMax() - GetGuessNumberMin();
+
+            if (totalTargetCount > maxTargetcount)
             {
                 throw new InvalidOperationException("가능한 추측 범위보다 레벨이 더 높음. 최대 -> 레벨:범위=1:1");
             }
@@ -51,7 +55,7 @@ namespace UpAndDown.Core.Domain
             HashSet<TargetValue> newTargetValuesSet = new HashSet<TargetValue>();
             int retryCount = 0;
 
-            while (newTargetValuesSet.Count < this.Level)
+            while (newTargetValuesSet.Count < totalTargetCount)
             {
                 int randomValue = GenerateRandomTargetValue();
                 TargetValue newTarget = new TargetValue
@@ -66,9 +70,13 @@ namespace UpAndDown.Core.Domain
                 }
             }
 
+            UpdateTargetRemains(newTargetValuesSet);
+
             return newTargetValuesSet;
         }
 
-        private int GenerateRandomTargetValue() => RandomGenerator.Next(GUESS_NUMBER_MIN, GUESS_NUMBER_MAX);
+        public void UpdateTargetRemains(HashSet<TargetValue> targetValuesSet) => this.TargetRemains = targetValuesSet.Sum(tv => tv.IsSolved == false ? 1 : 0);
+
+        private int GenerateRandomTargetValue() => RandomGenerator.Next(GetGuessNumberMin(), GetGuessNumberMax());
     }
 }

@@ -6,13 +6,14 @@ namespace UpAndDown.Interface
     public interface IGameLevelManager
     {
         int Level { get; set; }
-        HashSet<TargetValue> TargetValuesSet { get; set; }
+        int TargetRemains { get; set; }
 
         int GetGuessNumberMin();
         int GetGuessNumberMax();
         int GetGameLevelMin();
         int GetGameLevelMax();
 
-        void SelectGameLevel();
+        void SelectGameLevel(out HashSet<TargetValue> targetValuesSet);
+        void UpdateTargetRemains(HashSet<TargetValue> targetValuesSet);
     }
 }

@@ -9,6 +9,13 @@ namespace UpAndDown.Core.Domain
 {
     public class JudgementManager : IJudgementManager
     {
+        private IGameLevelManager gameLevelManager;
+
+        public JudgementManager(IGameLevelManager gameLevelManager)
+        {
+            this.gameLevelManager = gameLevelManager;
+        }
+
         public Judgement JudgeUpOrDownResult(int userInput, int targetValue)
         {
             if (userInput == targetValue)
@@ -37,27 +44,23 @@ namespace UpAndDown.Core.Domain
 
             if (mostCloseDifference == 0)
             {
-                // List 를 이용해서 값을 직접 변경하는 방법이 나은지???
+                // todo: List 를 이용해서 값을 직접 변경하는 방법이 나은지???
                 if (targetValues.Remove(mostCloseTarget))
                 {
                     targetValues.Add(new TargetValue { Value = mostCloseTarget.Value, IsSolved = true });
+                    gameLevelManager.UpdateTargetRemains(targetValues);
+
+                    return Judgement.Equal;
                 }
                 else
                 {
                     throw new InvalidOperationException("정상적으로 삭제가 안된다면 뭔가 잘못된 것임");
                 }
-
-                return Judgement.Equal;
             }
 
             return mostCloseDifference > 0
                 ? Judgement.InputIsHigherThanTarget
                 : Judgement.InputIsLowerThanTarget;
-        }
-
-        public int FindTargetRemain(HashSet<TargetValue> targetValues)
-        {
-            return targetValues.Sum(tv => tv.IsSolved == false ? 1 : 0);
         }
 
         public bool IsSolvedTargetAll(HashSet<TargetValue> targetValues)
