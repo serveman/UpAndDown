@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UpAndDown.Core.Domain;
 using UpAndDown.CustomException;
 using UpAndDown.Game.Enum;
 using UpAndDown.Game.Model;
@@ -72,7 +71,7 @@ namespace UpAndDown.Service
             Judgement result;
             do
             {
-                int currentUserInputNumber = InputUserNumber();
+                int currentUserInputNumber = GetUserInputNumber();
 
                 result = judgementManager.JudgeUpOrDownResultMulti(currentUserInputNumber, this.TargetValues);
 
@@ -107,30 +106,34 @@ namespace UpAndDown.Service
 #endif
         }
 
-        private int InputUserNumber()
+        private int GetUserInputNumber()
         {
             Console.WriteLine();
             Console.Write($"Step{this.TryCount + TRY_COUNT_INDEX_OFFSET, 3} - [Remain {gameLevelManager.TargetRemains}] " +
-                          $"숫자를 입력해주세요({gameLevelManager.GetGuessNumberMin()}~{gameLevelManager.GetGuessNumberMax()}, 0=포기): ");
+                          $"숫자를 입력해주세요({gameLevelManager.GuessNumberMin}~{gameLevelManager.GuessNumberMax}, 0=포기): ");
 
+            return ValidateUserInput();
+        }
+
+        private int ValidateUserInput()
+        {
             int readUserNumber;
             while (!int.TryParse(Console.ReadLine(), out readUserNumber) ||
-                   readUserNumber < gameLevelManager.GetGuessNumberMin() || readUserNumber > gameLevelManager.GetGuessNumberMax())
+                   readUserNumber < gameLevelManager.GuessNumberMin || readUserNumber > gameLevelManager.GuessNumberMax)
             {
-                if(readUserNumber == 0)
+                if (readUserNumber == 0)
                 {
                     throw new ExitGameByUserException("유저가 게임을 포기했습니다 !!");
                 }
 
                 Console.WriteLine("잘못된 형식이거나 범위를 벗어났습니다. " +
-                                  $"다시 입력해주세요 ({gameLevelManager.GetGuessNumberMin()}~{gameLevelManager.GetGuessNumberMax()}).");
+                                  $"다시 입력해주세요 ({gameLevelManager.GuessNumberMin}~{gameLevelManager.GuessNumberMax}).");
             }
 
             this.TryCount++;
 
             return readUserNumber;
         }
-
 
         private void DisplayResultMessage(Judgement result)
         {
