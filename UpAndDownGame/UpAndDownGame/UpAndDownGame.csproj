@@ -61,10 +61,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomException\ExitGameException.cs" />
     <Compile Include="Game\Model\TargetValue.cs" />
     <Compile Include="Game\Enum\Judgement.cs" />
     <Compile Include="Core\Domain\GameLevelManager.cs" />
     <Compile Include="Core\Domain\JudgementManager.cs" />
+    <Compile Include="Interface\IMemberService.cs" />
+    <Compile Include="Interface\IJudgementManager.cs" />
+    <Compile Include="Interface\IGameLevelManager.cs" />
     <Compile Include="Service\GameService.cs" />
     <Compile Include="History\History.cs" />
     <Compile Include="Game\UpAndDown.cs" />

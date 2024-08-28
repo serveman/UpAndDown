@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UpAndDown.Game.Model;
+using UpAndDown.Interface;
 
 namespace UpAndDown.Core.Domain
 {
-    public class GameLevelManager
+    public class GameLevelManager : IGameLevelManager
     {
         public const int GUESS_NUMBER_MIN = 1;
         public const int GUESS_NUMBER_MAX = 100;
@@ -14,8 +15,13 @@ namespace UpAndDown.Core.Domain
 
         private static readonly Random RandomGenerator = new Random();
 
-        protected int Level { get; set; }
-        protected HashSet<TargetValue> TargetValuesSet { get; set; }
+        public int Level { get; set; }
+        public HashSet<TargetValue> TargetValuesSet { get; set; }
+
+        public int GetGuessNumberMin() => GUESS_NUMBER_MIN;
+        public int GetGuessNumberMax() => GUESS_NUMBER_MAX;
+        public int GetGameLevelMin() => GAME_LEVEL_MIN;
+        public int GetGameLevelMax() => GAME_LEVEL_MAX;
 
 
         /// <summary>
@@ -37,6 +43,11 @@ namespace UpAndDown.Core.Domain
 
         private HashSet<TargetValue> GenerateTargetValuesSet()
         {
+            if(this.Level > GUESS_NUMBER_MAX - GUESS_NUMBER_MIN)
+            {
+                throw new InvalidOperationException("가능한 추측 범위보다 레벨이 더 높음. 최대 -> 레벨:범위=1:1");
+            }
+
             HashSet<TargetValue> newTargetValuesSet = new HashSet<TargetValue>();
             int retryCount = 0;
 
@@ -51,20 +62,13 @@ namespace UpAndDown.Core.Domain
 
                 if (!newTargetValuesSet.Add(newTarget))
                 {
-                    retryCount++;
-                    if (retryCount > 1000)
-                    {
-                        throw new NotImplementedException("난이도에서 랜덤 숫자 배정 시 무한루프 방지에 걸림. 게임 조건이나 중복 로직 확인 필요");
-                    }
+                    retryCount++;   // 디버깅용
                 }
             }
 
             return newTargetValuesSet;
         }
 
-        private int GenerateRandomTargetValue()
-        {
-            return RandomGenerator.Next(GUESS_NUMBER_MIN, GUESS_NUMBER_MAX);
-        }
+        private int GenerateRandomTargetValue() => RandomGenerator.Next(GUESS_NUMBER_MIN, GUESS_NUMBER_MAX);
     }
 }

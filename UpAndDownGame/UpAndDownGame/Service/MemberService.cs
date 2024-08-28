@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UpAndDown.Interface;
+using UpAndDown.User;
+using UpAndDown.User.Model;
 
-namespace UpAndDown.User
+namespace UpAndDown.Service
 {
-    public class MemberService : MemberIO
+    public class MemberService : MemberIO, IMemberService
     {
         HashSet<Member> members;
 
@@ -12,7 +15,7 @@ namespace UpAndDown.User
 
         public void ReadMembersInformation()
         {
-            this.members = ReadMemberFile();
+            members = ReadMemberFile();
         }
 
         /// <summary>
@@ -29,10 +32,10 @@ namespace UpAndDown.User
             bool isExistName = false;
             foreach (Member member in members)
             {
-                if(member.Name == name && !isExistName)
+                if (member.Name == name && !isExistName)
                 {
                     Console.Write(">> ");
-                    this.CurrentMember = new Member
+                    CurrentMember = new Member
                     {
                         Name = member.Name,
                         PlayCountList = member.PlayCountList
@@ -43,10 +46,10 @@ namespace UpAndDown.User
                 {
                     Console.Write("   ");
                 }
-                Console.WriteLine($"Read: {member.Name, -12}");
+                Console.WriteLine($"Read: {member.Name,-12}");
             }
 
-            if(!isExistName)
+            if (!isExistName)
             {
                 CurrentMember = CreateNewMember(name);
             }
@@ -88,14 +91,14 @@ namespace UpAndDown.User
 
         public Member GetCurrentMember()
         {
-            return this.CurrentMember;
+            return CurrentMember;
         }
 
         public void SaveCurrentMember(Member member)
         {
-            members.Remove(this.CurrentMember);
+            members.Remove(CurrentMember);
 
-            this.CurrentMember = member;
+            CurrentMember = member;
 
             members.Add(member);
         }

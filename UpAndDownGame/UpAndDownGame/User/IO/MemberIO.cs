@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UpAndDown.User.Model;
 
 namespace UpAndDown.User
 {
