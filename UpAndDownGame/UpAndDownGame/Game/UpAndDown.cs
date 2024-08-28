@@ -1,5 +1,5 @@
 using UpAndDown.Core.Domain;
-using UpAndDown.User;
+using UpAndDown.Service;
 
 namespace UpAndDown.Game
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace UpAndDown.User
+namespace UpAndDown.User.Model
 {
     public struct Member
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UpAndDown.User
+namespace UpAndDown.User.Model
 {
     public class Count
     {
@@ -13,14 +13,6 @@ namespace UpAndDown.User
             Success = 0;
             Failure = 0;
             Total = 0;
-        }
-
-        // Clone 시 이용하기 위한 생성자
-        private Count(int s, int f)
-        {
-            Success = s;
-            Failure = f;
-            Total = s + f;
         }
 
         public void IncreaseCount(bool isSuccess)
