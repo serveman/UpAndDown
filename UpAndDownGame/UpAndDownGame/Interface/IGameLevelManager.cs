@@ -8,10 +8,10 @@ namespace UpAndDown.Interface
         int Level { get; set; }
         int TargetRemains { get; set; }
 
-        int GetGuessNumberMin();
-        int GetGuessNumberMax();
-        int GetGameLevelMin();
-        int GetGameLevelMax();
+        int GuessNumberMin { get; }
+        int GuessNumberMax { get; }
+        int GameLevelMin { get; }
+        int GameLevelMax { get; }
 
         void SelectGameLevel(out HashSet<TargetValue> targetValuesSet);
         void UpdateTargetRemains(HashSet<TargetValue> targetValuesSet);
