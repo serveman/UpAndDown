@@ -39,7 +39,6 @@ namespace UpAndDown.Interface
         /// </returns>
         Judgement JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValue> targetValues);
 
-        int FindTargetRemain(HashSet<TargetValue> targetValues);
         bool IsSolvedTargetAll(HashSet<TargetValue> targetValues);
     }
 }

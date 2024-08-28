@@ -1,4 +1,5 @@
 using UpAndDown.Core.Domain;
+using UpAndDown.Interface;
 using UpAndDown.Service;
 
 namespace UpAndDown.Game
@@ -14,9 +15,12 @@ namespace UpAndDown.Game
 
         private void Run()
         {
+            IGameLevelManager gameLevelManager = new GameLevelManager();
+
             new GameService(
+                gameLevelManager,
                 new MemberService(),
-                new JudgementManager()
+                new JudgementManager(gameLevelManager)
                 );
         }
 
