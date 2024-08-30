@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using UpAndDown.CustomException;
 using UpAndDown.Game.Enum;
-using UpAndDown.Game.Model;
+using UpAndDown.Game.Initialize;
 using UpAndDown.Interface;
 using UpAndDown.User.Model;
 
@@ -17,7 +16,6 @@ namespace UpAndDown.Service
         private readonly IMemberService memberService;
         private readonly IJudgementManager judgementManager;
 
-        private HashSet<TargetValue> TargetValues { get; set; }
         private Member CurrentMember { get; set; }
         private int TryCount { get; set; }
 
@@ -54,16 +52,11 @@ namespace UpAndDown.Service
 
         private void Initialize()
         {
-            // MemberService 내부 필드에서 members 정보를 관리한다
-            memberService.ReadMembersInformation();
-            memberService.SelectMemberInformation();
-            CurrentMember = memberService.GetCurrentMember();
+            var initializer = new GameInitializer(gameLevelManager, memberService);
+            initializer.InitializeGame();
 
+            this.CurrentMember = memberService.GetCurrentMember();
             this.TryCount = 0;
-
-            gameLevelManager.SelectGameLevel(out HashSet<TargetValue> targetValuesSet);
-
-            this.TargetValues = targetValuesSet;
         }
 
         private void PlayGame(out bool isSuccess)
@@ -73,7 +66,7 @@ namespace UpAndDown.Service
             {
                 int currentUserInputNumber = GetUserInputNumber();
 
-                result = judgementManager.JudgeUpOrDownResultMulti(currentUserInputNumber, this.TargetValues);
+                result = judgementManager.JudgeUpOrDownResultMulti(currentUserInputNumber, gameLevelManager.TargetValuesSet);
 
                 DisplayResultMessage(result);
             } while (gameLevelManager.TargetRemains != 0);
@@ -108,18 +101,25 @@ namespace UpAndDown.Service
 
         private int GetUserInputNumber()
         {
-            Console.WriteLine();
-            Console.Write($"Step{this.TryCount + TRY_COUNT_INDEX_OFFSET, 3} - [Remain {gameLevelManager.TargetRemains}] " +
-                          $"숫자를 입력해주세요({gameLevelManager.GuessNumberMin}~{gameLevelManager.GuessNumberMax}, 0=포기): ");
+            int stepIndex = this.TryCount + TRY_COUNT_INDEX_OFFSET;
+            int remains = gameLevelManager.TargetRemains;
 
-            return ValidateUserInput();
+            int min = gameLevelManager.GuessNumberMin;
+            int max = gameLevelManager.GuessNumberMax;
+
+            Console.WriteLine();
+            Console.Write($"Step{stepIndex, 3} - [Remain {remains}] " +
+                          $"숫자를 입력해주세요({min}~{max}, 0=포기): ");
+
+            return ValidateUserInput(min, max);
         }
 
-        private int ValidateUserInput()
+        private int ValidateUserInput(int min, int max)
         {
             int readUserNumber;
+
             while (!int.TryParse(Console.ReadLine(), out readUserNumber) ||
-                   readUserNumber < gameLevelManager.GuessNumberMin || readUserNumber > gameLevelManager.GuessNumberMax)
+                   readUserNumber < min || readUserNumber > max)
             {
                 if (readUserNumber == 0)
                 {
@@ -127,7 +127,7 @@ namespace UpAndDown.Service
                 }
 
                 Console.WriteLine("잘못된 형식이거나 범위를 벗어났습니다. " +
-                                  $"다시 입력해주세요 ({gameLevelManager.GuessNumberMin}~{gameLevelManager.GuessNumberMax}).");
+                                  $"다시 입력해주세요 ({min}~{max}).");
             }
 
             this.TryCount++;

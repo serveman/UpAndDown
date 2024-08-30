@@ -5,6 +5,7 @@ namespace UpAndDown.Interface
 {
     public interface IGameLevelManager
     {
+        HashSet<TargetValue> TargetValuesSet { get; set; }
         int Level { get; set; }
         int TargetRemains { get; set; }
 
@@ -13,7 +14,7 @@ namespace UpAndDown.Interface
         int GameLevelMin { get; }
         int GameLevelMax { get; }
 
-        void SelectGameLevel(out HashSet<TargetValue> targetValuesSet);
-        void UpdateTargetRemains(HashSet<TargetValue> targetValuesSet);
+        void SelectGameLevel();
+        void UpdateTargetRemains();
     }
 }
