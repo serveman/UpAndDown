@@ -16,6 +16,7 @@ namespace UpAndDown.Core.Domain
 
         private static readonly Random RandomGenerator = new Random();
 
+        public HashSet<TargetValue> TargetValuesSet { get; set; } = new HashSet<TargetValue>();
         public int Level { get; set; }
         public int TargetRemains { get; set; }
 
@@ -24,23 +25,29 @@ namespace UpAndDown.Core.Domain
         /// 난이도 선택
         /// 난이도 숫자 = 목표로 해야하는 Target 의 개수
         /// </summary>
-        public void SelectGameLevel(out HashSet<TargetValue> targetValuesSet)
+        public void SelectGameLevel()
         {
+            int min = GameLevelMin;
+            int max = GameLevelMax;
+
             int inputLevel;
             do
             {
-                Console.Write($"난이도를 선택해주세요(쉬움:{GameLevelMin} ~ {GameLevelMax}:어려움): ");
+                Console.Write($"난이도를 선택해주세요(쉬움:{min} ~ {max}:어려움): ");
             } while (!int.TryParse(Console.ReadLine(), out inputLevel)
-                  || inputLevel < GameLevelMin || inputLevel > GameLevelMax);
+                  || inputLevel < min || inputLevel > max);
 
             this.Level = inputLevel;
 
-            targetValuesSet = GenerateTargetValuesSet(totalTargetCount: this.Level);
+            GenerateTargetValuesSet(totalTargetCount: this.Level);
         }
 
-        private HashSet<TargetValue> GenerateTargetValuesSet(int totalTargetCount)
+        private void GenerateTargetValuesSet(int totalTargetCount)
         {
-            int maxTargetcount = GuessNumberMax - GuessNumberMin;
+            int min = GuessNumberMin;
+            int max = GuessNumberMax;
+
+            int maxTargetcount = max - min;
 
             if (totalTargetCount > maxTargetcount)
             {
@@ -52,7 +59,7 @@ namespace UpAndDown.Core.Domain
 
             while (newTargetValuesSet.Count < totalTargetCount)
             {
-                int randomValue = GenerateRandomTargetValue();
+                int randomValue = GenerateRandomTargetValue(min, max);
                 TargetValue newTarget = new TargetValue
                 {
                     Value = randomValue,
@@ -64,14 +71,13 @@ namespace UpAndDown.Core.Domain
                     retryCount++;   // 디버깅용
                 }
             }
+            this.TargetValuesSet = newTargetValuesSet;
 
-            UpdateTargetRemains(newTargetValuesSet);
-
-            return newTargetValuesSet;
+            UpdateTargetRemains();
         }
 
-        public void UpdateTargetRemains(HashSet<TargetValue> targetValuesSet) => this.TargetRemains = targetValuesSet.Sum(tv => tv.IsSolved == false ? 1 : 0);
+        public void UpdateTargetRemains() => this.TargetRemains = this.TargetValuesSet.Sum(tv => tv.IsSolved == false ? 1 : 0);
 
-        private int GenerateRandomTargetValue() => RandomGenerator.Next(GuessNumberMin, GuessNumberMax);
+        private int GenerateRandomTargetValue(int min, int max) => RandomGenerator.Next(min, max);
     }
 }

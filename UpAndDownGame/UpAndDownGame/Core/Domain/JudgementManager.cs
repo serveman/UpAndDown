@@ -48,7 +48,7 @@ namespace UpAndDown.Core.Domain
                 if (targetValues.Remove(mostCloseTarget))
                 {
                     targetValues.Add(new TargetValue { Value = mostCloseTarget.Value, IsSolved = true });
-                    gameLevelManager.UpdateTargetRemains(targetValues);
+                    gameLevelManager.UpdateTargetRemains();
 
                     return Judgement.Equal;
                 }

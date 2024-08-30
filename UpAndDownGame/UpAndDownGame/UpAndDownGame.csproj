@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomException\ExitGameException.cs" />
+    <Compile Include="Game\Initialize\GameInitializer.cs" />
     <Compile Include="Game\Model\TargetValue.cs" />
     <Compile Include="Game\Enum\Judgement.cs" />
     <Compile Include="Core\Domain\GameLevelManager.cs" />
