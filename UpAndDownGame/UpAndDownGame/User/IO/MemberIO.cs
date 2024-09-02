@@ -41,10 +41,11 @@ namespace UpAndDown.User
                             foreach (JObject playCountJson in playCountArray)
                             {
                                 playCountList.Add(new Count
-                                {
-                                    Success = (int)playCountJson["SUCCESS"],
-                                    Failure = (int)playCountJson["FAILURE"]
-                                });
+                                (
+                                    level: (int)playCountJson["LEVEL"],
+                                    success: (int)playCountJson["SUCCESS"],
+                                    failure: (int)playCountJson["FAILURE"]
+                                ));
                             }
 
                             Member member = new Member
@@ -110,6 +111,7 @@ namespace UpAndDown.User
                         {
                             JObject countObject = new JObject
                             {
+                                { "LEVEL",  (int)count.Level },
                                 { "SUCCESS", (int)count.Success },
                                 { "FAILURE", (int)count.Failure }
                             };

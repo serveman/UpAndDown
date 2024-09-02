@@ -4,6 +4,7 @@
     {
         Select,
         Delete,
+        Exit,
         Invalid
     }
 }
