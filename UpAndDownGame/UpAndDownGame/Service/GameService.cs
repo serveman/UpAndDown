@@ -118,17 +118,26 @@ namespace UpAndDown.Service
         {
             int readUserNumber;
 
-            while (!int.TryParse(Console.ReadLine(), out readUserNumber) ||
-                   readUserNumber < min || readUserNumber > max)
+            bool isInvalid = true;
+
+            do
             {
-                if (readUserNumber == 0)
+                isInvalid = !int.TryParse(Console.ReadLine(), out readUserNumber);
+
+                if(isInvalid)
+                {
+                    Console.Write("잘못된 형식입니다. 다시 입력해주세요: ");
+                } 
+                else if (readUserNumber == 0)
                 {
                     throw new ExitGameByUserException("유저가 게임을 포기했습니다 !!");
                 }
-
-                Console.WriteLine("잘못된 형식이거나 범위를 벗어났습니다. " +
-                                  $"다시 입력해주세요 ({min}~{max}).");
-            }
+                else if (readUserNumber < min || readUserNumber > max)
+                {
+                    Console.Write($"범위를 벗어났습니다. 다시 입력해주세요 ({min}~{max}): ");
+                    isInvalid = true;
+                }
+            } while (isInvalid);
 
             this.TryCount++;
 
