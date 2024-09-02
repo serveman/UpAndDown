@@ -11,9 +11,9 @@ namespace UpAndDown.Game
     {
         public UpAndDownGame()
         {
-            Initialize();
+            this.Initialize();
 
-            Run();
+            this.Run();
         }
 
         private void Run()

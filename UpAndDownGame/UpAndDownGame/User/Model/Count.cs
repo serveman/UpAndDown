@@ -11,21 +11,21 @@ namespace UpAndDown.User.Model
 
         public Count(int level, int success = 0, int failure = 0)
         {
-            Level = level;
-            Success = success;
-            Failure = failure;
-            Total = Success + Failure;
+            this.Level = level;
+            this.Success = success;
+            this.Failure = failure;
+            this.Total = Success + Failure;
         }
 
         public void IncreaseCount(bool isSuccess)
         {
             if (isSuccess)
             {
-                Success++;
+                this.Success++;
             }
             else
             {
-                Failure++;
+                this.Failure++;
             }
 
             Total = Success + Failure;
