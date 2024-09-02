@@ -16,7 +16,8 @@ namespace UpAndDown.Game.Initialize
         public void InitializeGame()
         {
             memberService.ReadMembersInformation();
-            memberService.SelectMemberInformation();
+            
+            memberService.HandleMemberSelection();
 
             gameLevelManager.SelectGameLevel();
         }

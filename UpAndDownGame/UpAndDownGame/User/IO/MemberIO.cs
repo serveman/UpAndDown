@@ -52,9 +52,7 @@ namespace UpAndDown.User
                                 Name = memberJson["NAME"]?.Value<string>(),
                                 PlayCountList = playCountList
                             };
-#if DEBUG
-                            Console.WriteLine($"Read: {member.Name, -12}");
-#endif
+
                             members.Add(member);
                         }
                     }
@@ -89,7 +87,7 @@ namespace UpAndDown.User
             return members;
         }
 
-        public static void UpdateMemberFile(HashSet<Member> members)
+        public static void UpdateMemberToFile(HashSet<Member> members)
         {
             try
             {

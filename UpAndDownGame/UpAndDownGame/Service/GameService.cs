@@ -1,9 +1,10 @@
 ﻿using System;
-using UpAndDown.CustomException;
 using UpAndDown.Game.Enum;
 using UpAndDown.Game.Initialize;
 using UpAndDown.Interface;
 using UpAndDown.User.Model;
+
+using static UpAndDown.CustomException.CustomExceptions;
 
 namespace UpAndDown.Service
 {
@@ -79,7 +80,6 @@ namespace UpAndDown.Service
             ApplySuccessAndFailureCount(isSuccess);
 
             memberService.SaveCurrentMember(CurrentMember);
-            memberService.UpdateMembersInformation();
         }
 
         /// <summary>
