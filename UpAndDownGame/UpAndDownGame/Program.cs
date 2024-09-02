@@ -1,4 +1,5 @@
-﻿using UpAndDown.Game;
+﻿using System;
+using UpAndDown.Game;
 
 namespace UpAndDown
 {
@@ -8,6 +9,8 @@ namespace UpAndDown
         {
             new UpAndDownGame();
 
+            Console.WriteLine("엔터 키를 눌러주세요.");
+            Console.ReadLine();
             //new History.History();
         }
     }

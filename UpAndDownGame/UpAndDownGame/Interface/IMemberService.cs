@@ -4,10 +4,11 @@ namespace UpAndDown.Interface
 {
     public interface IMemberService
     {
-        void ReadMembersInformation();
-        void SelectMemberInformation();
         Member GetCurrentMember();
+
+        void ReadMembersInformation();
         void SaveCurrentMember(Member member);
-        void UpdateMembersInformation();
+
+        void HandleMemberSelection();
     }
 }

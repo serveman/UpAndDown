@@ -1,6 +1,9 @@
+using System;
 using UpAndDown.Core.Domain;
 using UpAndDown.Interface;
 using UpAndDown.Service;
+
+using static UpAndDown.CustomException.CustomExceptions;
 
 namespace UpAndDown.Game
 {
@@ -17,11 +20,18 @@ namespace UpAndDown.Game
         {
             IGameLevelManager gameLevelManager = new GameLevelManager();
 
-            new GameService(
-                gameLevelManager,
-                new MemberService(),
-                new JudgementManager(gameLevelManager)
-                );
+            try
+            {
+                new GameService(
+                    gameLevelManager,
+                    new MemberService(),
+                    new JudgementManager(gameLevelManager)
+                    );
+            }
+            catch (ExitGameByUserException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         private void Initialize()

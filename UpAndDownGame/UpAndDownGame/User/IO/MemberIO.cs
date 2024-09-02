@@ -41,10 +41,11 @@ namespace UpAndDown.User
                             foreach (JObject playCountJson in playCountArray)
                             {
                                 playCountList.Add(new Count
-                                {
-                                    Success = (int)playCountJson["SUCCESS"],
-                                    Failure = (int)playCountJson["FAILURE"]
-                                });
+                                (
+                                    level: (int)playCountJson["LEVEL"],
+                                    success: (int)playCountJson["SUCCESS"],
+                                    failure: (int)playCountJson["FAILURE"]
+                                ));
                             }
 
                             Member member = new Member
@@ -52,9 +53,7 @@ namespace UpAndDown.User
                                 Name = memberJson["NAME"]?.Value<string>(),
                                 PlayCountList = playCountList
                             };
-#if DEBUG
-                            Console.WriteLine($"Read: {member.Name, -12}");
-#endif
+
                             members.Add(member);
                         }
                     }
@@ -89,7 +88,7 @@ namespace UpAndDown.User
             return members;
         }
 
-        public static void UpdateMemberFile(HashSet<Member> members)
+        public static void UpdateMemberToFile(HashSet<Member> members)
         {
             try
             {
@@ -112,6 +111,7 @@ namespace UpAndDown.User
                         {
                             JObject countObject = new JObject
                             {
+                                { "LEVEL",  (int)count.Level },
                                 { "SUCCESS", (int)count.Success },
                                 { "FAILURE", (int)count.Failure }
                             };
