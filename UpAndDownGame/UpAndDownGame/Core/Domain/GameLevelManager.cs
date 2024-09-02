@@ -14,12 +14,13 @@ namespace UpAndDown.Core.Domain
         public int GameLevelMin { get; private set; } = 1;
         public int GameLevelMax { get; private set; } = 5;
 
-        private static readonly Random RandomGenerator = new Random();
+        private static readonly Random randomGenerator = new Random();
 
         public HashSet<TargetValue> TargetValuesSet { get; set; } = new HashSet<TargetValue>();
         public int Level { get; set; }
         public int TargetRemains { get; set; }
 
+        public GameLevelManager() { }
 
         /// <summary>
         /// 난이도 선택
@@ -37,9 +38,9 @@ namespace UpAndDown.Core.Domain
             } while (!int.TryParse(Console.ReadLine(), out inputLevel)
                   || inputLevel < min || inputLevel > max);
 
-            this.Level = inputLevel;
+            Level = inputLevel;
 
-            GenerateTargetValuesSet(totalTargetCount: this.Level);
+            GenerateTargetValuesSet(totalTargetCount: Level);
         }
 
         private void GenerateTargetValuesSet(int totalTargetCount)
@@ -71,13 +72,13 @@ namespace UpAndDown.Core.Domain
                     retryCount++;   // 디버깅용
                 }
             }
-            this.TargetValuesSet = newTargetValuesSet;
+            TargetValuesSet = newTargetValuesSet;
 
             UpdateTargetRemains();
         }
 
-        public void UpdateTargetRemains() => this.TargetRemains = this.TargetValuesSet.Sum(tv => tv.IsSolved == false ? 1 : 0);
+        public void UpdateTargetRemains() => TargetRemains = TargetValuesSet.Sum(tv => tv.IsSolved == false ? 1 : 0);
 
-        private int GenerateRandomTargetValue(int min, int max) => RandomGenerator.Next(min, max);
+        private int GenerateRandomTargetValue(int min, int max) => randomGenerator.Next(min, max);
     }
 }

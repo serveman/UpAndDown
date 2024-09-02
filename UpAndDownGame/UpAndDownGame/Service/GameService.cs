@@ -17,8 +17,8 @@ namespace UpAndDown.Service
         private readonly IMemberService memberService;
         private readonly IJudgementManager judgementManager;
 
-        private Member CurrentMember { get; set; }
-        private int TryCount { get; set; }
+        private Member currentMember;
+        private int tryCount;
 
         public GameService(IGameLevelManager gameLevelManager, IMemberService memberService, IJudgementManager judgementManager)
         {
@@ -26,7 +26,7 @@ namespace UpAndDown.Service
             this.memberService = memberService;
             this.judgementManager = judgementManager;
 
-            this.Run();
+            Run();
         }
 
         private void Run()
@@ -56,8 +56,8 @@ namespace UpAndDown.Service
             var initializer = new GameInitializer(gameLevelManager, memberService);
             initializer.InitializeGame();
 
-            this.CurrentMember = memberService.GetCurrentMember();
-            this.TryCount = 0;
+            currentMember = memberService.GetCurrentMember();
+            tryCount = 0;
         }
 
         private void PlayGame(out bool isSuccess)
@@ -79,7 +79,7 @@ namespace UpAndDown.Service
         {
             ApplySuccessAndFailureCount(isSuccess);
 
-            memberService.SaveCurrentMember(CurrentMember);
+            memberService.SaveCurrentMember(currentMember);
         }
 
         /// <summary>
@@ -94,14 +94,14 @@ namespace UpAndDown.Service
             currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET] = cnt;
 
 #else       // Count 를 class 로 선언했을 때는 이렇게 해도 정상적으로 값이 증가한다
-            CurrentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET].IncreaseCount(isSuccess);
+            currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET].IncreaseCount(isSuccess);
 
 #endif
         }
 
         private int GetUserInputNumber()
         {
-            int stepIndex = this.TryCount + TRY_COUNT_INDEX_OFFSET;
+            int stepIndex = tryCount + TRY_COUNT_INDEX_OFFSET;
             int remains = gameLevelManager.TargetRemains;
 
             int min = gameLevelManager.GuessNumberMin;
@@ -130,7 +130,7 @@ namespace UpAndDown.Service
                                   $"다시 입력해주세요 ({min}~{max}).");
             }
 
-            this.TryCount++;
+            tryCount++;
 
             return readUserNumber;
         }

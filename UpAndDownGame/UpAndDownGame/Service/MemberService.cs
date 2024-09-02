@@ -20,7 +20,7 @@ namespace UpAndDown.Service
 
         public void ReadMembersInformation()
         {
-            this.Members = ReadMemberFile();
+            Members = ReadMemberFile();
         }
 
         private void SelectMember()
@@ -34,9 +34,9 @@ namespace UpAndDown.Service
                 name = Console.ReadLine();
             } while (string.IsNullOrEmpty(name));
 
-            this.CurrentMember = SelectMemberByName(name);
+            CurrentMember = SelectMemberByName(name);
 
-            DisplayMemberInformation(this.CurrentMember);
+            DisplayMemberInformation(CurrentMember);
 
             Members.Add(CurrentMember);
 
@@ -48,7 +48,7 @@ namespace UpAndDown.Service
             Console.Clear();
 
             Member? currentMember = null;
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 string displayString = "";
                 if (member.Name == name && currentMember == null)
@@ -81,7 +81,7 @@ namespace UpAndDown.Service
 
             bool isNotExistName = true;
             Member? selectedMember = null;
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 string displayString;
                 if (member.Name == name && isNotExistName)
@@ -103,7 +103,7 @@ namespace UpAndDown.Service
             }
 
             Assert.IsNotNull(selectedMember);
-            if (this.Members.Remove(selectedMember.Value))
+            if (Members.Remove(selectedMember.Value))
             {
                 UpdateMembersInformation();
                 Console.WriteLine($"{name} 사용자가 정상적으로 삭제되었습니다.");
@@ -150,18 +150,18 @@ namespace UpAndDown.Service
 
         public void SaveCurrentMember(Member member)
         {
-            this.Members.Remove(CurrentMember);
+            Members.Remove(CurrentMember);
 
             CurrentMember = member;
 
-            this.Members.Add(member);
+            Members.Add(member);
 
             UpdateMembersInformation();
         }
 
         private void UpdateMembersInformation()
         {
-            UpdateMemberToFile(this.Members);
+            UpdateMemberToFile(Members);
         }
 
         public void HandleMemberSelection()
@@ -217,7 +217,7 @@ namespace UpAndDown.Service
 
         private void DisplayMembersAll()
         {
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 Console.WriteLine($"{member.Name, 15}: Total PlayCount: {member.PlayCountList.Sum(count => count.Total)}");
             }
