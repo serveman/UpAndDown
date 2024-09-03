@@ -32,6 +32,13 @@ namespace UpAndDown.Game
             {
                 Console.WriteLine(e.Message);
             }
+            finally
+            {
+                Console.WriteLine();
+                Console.Write("종료하려면 엔터 키를 입력해주세요: ");
+                Console.ReadLine();
+            }
+
         }
 
         private void Initialize()

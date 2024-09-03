@@ -88,15 +88,7 @@ namespace UpAndDown.Service
         /// <param name="isSuccess">성공 또는 실패 여부</param>
         private void ApplySuccessAndFailureCount(bool isSuccess)
         {
-#if (false) // Count 를 struct 로 선언했을 때는 이렇게 해야 정상적으로 값이 들어간다    -> 왜?
-            Count cnt = currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET];
-            cnt.IncreaseCount(isSuccess);
-            currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET] = cnt;
-
-#else       // Count 를 class 로 선언했을 때는 이렇게 해도 정상적으로 값이 증가한다
             currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET].IncreaseCount(isSuccess);
-
-#endif
         }
 
         private int GetUserInputNumber()
@@ -117,18 +109,26 @@ namespace UpAndDown.Service
         private int ValidateUserInput(int min, int max)
         {
             int readUserNumber;
+            bool isValid;
 
-            while (!int.TryParse(Console.ReadLine(), out readUserNumber) ||
-                   readUserNumber < min || readUserNumber > max)
+            do
             {
-                if (readUserNumber == 0)
+                isValid = int.TryParse(Console.ReadLine(), out readUserNumber);
+
+                if(!isValid)
+                {
+                    Console.Write("잘못된 형식입니다. 숫자를 입력해주세요: ");
+                }
+                else if (readUserNumber == 0)
                 {
                     throw new ExitGameByUserException("유저가 게임을 포기했습니다 !!");
                 }
-
-                Console.WriteLine("잘못된 형식이거나 범위를 벗어났습니다. " +
-                                  $"다시 입력해주세요 ({min}~{max}).");
-            }
+                else if (readUserNumber < min || readUserNumber > max)
+                {
+                    Console.Write("범위를 벗어났습니다. 다시 입력해주세요: ");
+                    isValid = false;
+                }
+            } while (!isValid);
 
             tryCount++;
 

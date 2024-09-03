@@ -32,11 +32,25 @@ namespace UpAndDown.Core.Domain
             int max = GameLevelMax;
 
             int inputLevel;
+            bool isValid;
             do
             {
                 Console.Write($"난이도를 선택해주세요(쉬움:{min} ~ {max}:어려움): ");
-            } while (!int.TryParse(Console.ReadLine(), out inputLevel)
-                  || inputLevel < min || inputLevel > max);
+                isValid = int.TryParse(Console.ReadLine(), out inputLevel);
+
+                if(!isValid)
+                {
+                    Console.WriteLine("잘못된 형식의 입력입니다. 숫자를 입력해주세요!");
+                }
+                else if(inputLevel < min || inputLevel > max)
+                {
+                    Console.WriteLine("범위를 벗어났습니다. 다시 입력해주세요!");
+                    isValid = false;
+                }
+
+                Console.WriteLine();
+            } while (!isValid);
+                  
 
             Level = inputLevel;
 
