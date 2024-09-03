@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-namespace UpAndDown.User.Model
+namespace UpAndDown.Game.Model
 {
     public struct Member
     {
         public string Name { get; set; }
-        public List<Count> PlayCountList { get; set; }
+        public List<PlayCount> PlayCountList { get; set; }
     }
 }

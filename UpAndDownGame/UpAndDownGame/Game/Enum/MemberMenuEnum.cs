@@ -1,6 +1,6 @@
 ﻿namespace UpAndDown.Game.Enum
 {
-    public enum MemberMenu
+    public enum MemberMenuEnum
     {
         Select,
         Delete,

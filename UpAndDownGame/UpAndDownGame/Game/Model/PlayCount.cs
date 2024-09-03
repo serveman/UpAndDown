@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace UpAndDown.User.Model
+namespace UpAndDown.Game.Model
 {
-    public class Count
+    public class PlayCount
     {
         public int Level { get; set; }
         public int Success { get; set; }
         public int Failure { get; set; }
         public int Total { get; private set; }
 
-        public Count(int level, int success = 0, int failure = 0)
+        public PlayCount(int level, int success = 0, int failure = 0)
         {
             Level = level;
             Success = success;

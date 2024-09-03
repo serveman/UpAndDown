@@ -16,7 +16,7 @@ namespace UpAndDown.Core.Domain
 
         private static readonly Random randomGenerator = new Random();
 
-        public HashSet<TargetValue> TargetValuesSet { get; set; } = new HashSet<TargetValue>();
+        public HashSet<TargetValueStruct> TargetValuesSet { get; set; } = new HashSet<TargetValueStruct>();
         public int Level { get; set; }
         public int TargetRemains { get; set; }
 
@@ -69,13 +69,13 @@ namespace UpAndDown.Core.Domain
                 throw new InvalidOperationException("가능한 추측 범위보다 레벨이 더 높음. 최대 -> 레벨:범위=1:1");
             }
 
-            HashSet<TargetValue> newTargetValuesSet = new HashSet<TargetValue>();
+            HashSet<TargetValueStruct> newTargetValuesSet = new HashSet<TargetValueStruct>();
             int retryCount = 0;
 
             while (newTargetValuesSet.Count < totalTargetCount)
             {
                 int randomValue = GenerateRandomTargetValue(min, max);
-                TargetValue newTarget = new TargetValue
+                TargetValueStruct newTarget = new TargetValueStruct
                 {
                     Value = randomValue,
                     IsSolved = false

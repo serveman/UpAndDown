@@ -1,7 +1,7 @@
 ﻿
 namespace UpAndDown.Game.Enum
 {
-    public enum Judgement
+    public enum JudgementEnum
     {
         InputIsHigherThanTarget,
         InputIsLowerThanTarget,

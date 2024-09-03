@@ -2,7 +2,7 @@
 using UpAndDown.Game.Enum;
 using UpAndDown.Game.Initialize;
 using UpAndDown.Interface;
-using UpAndDown.User.Model;
+using UpAndDown.Game.Model;
 
 using static UpAndDown.CustomException.CustomExceptions;
 
@@ -62,7 +62,7 @@ namespace UpAndDown.Service
 
         private void PlayGame(out bool isSuccess)
         {
-            Judgement result;
+            JudgementEnum result;
             do
             {
                 int currentUserInputNumber = GetUserInputNumber();
@@ -135,19 +135,19 @@ namespace UpAndDown.Service
             return readUserNumber;
         }
 
-        private void DisplayResultMessage(Judgement result)
+        private void DisplayResultMessage(JudgementEnum result)
         {
             switch (result)
             {
-                case Judgement.InputIsHigherThanTarget:
+                case JudgementEnum.InputIsHigherThanTarget:
                     Console.WriteLine($"입력한 값이 목표값보다 큽니다.");
                     break;
 
-                case Judgement.InputIsLowerThanTarget:
+                case JudgementEnum.InputIsLowerThanTarget:
                     Console.WriteLine($"입력한 값이 목표값보다 작습니다.");
                     break;
 
-                case Judgement.Equal:
+                case JudgementEnum.Equal:
                     Console.WriteLine("정답입니다!");
                     break;
 
