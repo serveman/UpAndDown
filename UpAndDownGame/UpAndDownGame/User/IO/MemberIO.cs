@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using UpAndDown.User.Model;
+using UpAndDown.Game.Model;
 
 namespace UpAndDown.User
 {
@@ -37,10 +37,10 @@ namespace UpAndDown.User
                                 throw new Exception("Count 정보가 존재하지 않습니다");
                             }
 
-                            List<Count> playCountList = new List<Count>();
+                            List<PlayCount> playCountList = new List<PlayCount>();
                             foreach (JObject playCountJson in playCountArray)
                             {
-                                playCountList.Add(new Count
+                                playCountList.Add(new PlayCount
                                 (
                                     level: (int)playCountJson["LEVEL"],
                                     success: (int)playCountJson["SUCCESS"],
@@ -105,9 +105,9 @@ namespace UpAndDown.User
 
                     foreach (Member member in members)
                     {
-                        List<Count> countList = member.PlayCountList;
+                        List<PlayCount> countList = member.PlayCountList;
                         JArray countArray = new JArray();
-                        foreach (Count count in countList)
+                        foreach (PlayCount count in countList)
                         {
                             JObject countObject = new JObject
                             {

@@ -2,7 +2,7 @@
 using UpAndDown.Game.Enum;
 using UpAndDown.Game.Initialize;
 using UpAndDown.Interface;
-using UpAndDown.User.Model;
+using UpAndDown.Game.Model;
 
 using static UpAndDown.CustomException.CustomExceptions;
 
@@ -17,8 +17,8 @@ namespace UpAndDown.Service
         private readonly IMemberService memberService;
         private readonly IJudgementManager judgementManager;
 
-        private Member CurrentMember { get; set; }
-        private int TryCount { get; set; }
+        private Member currentMember;
+        private int tryCount;
 
         public GameService(IGameLevelManager gameLevelManager, IMemberService memberService, IJudgementManager judgementManager)
         {
@@ -26,7 +26,7 @@ namespace UpAndDown.Service
             this.memberService = memberService;
             this.judgementManager = judgementManager;
 
-            this.Run();
+            Run();
         }
 
         private void Run()
@@ -56,13 +56,13 @@ namespace UpAndDown.Service
             var initializer = new GameInitializer(gameLevelManager, memberService);
             initializer.InitializeGame();
 
-            this.CurrentMember = memberService.GetCurrentMember();
-            this.TryCount = 0;
+            currentMember = memberService.GetCurrentMember();
+            tryCount = 0;
         }
 
         private void PlayGame(out bool isSuccess)
         {
-            Judgement result;
+            JudgementEnum result;
             do
             {
                 int currentUserInputNumber = GetUserInputNumber();
@@ -79,7 +79,7 @@ namespace UpAndDown.Service
         {
             ApplySuccessAndFailureCount(isSuccess);
 
-            memberService.SaveCurrentMember(CurrentMember);
+            memberService.SaveCurrentMember(currentMember);
         }
 
         /// <summary>
@@ -88,20 +88,12 @@ namespace UpAndDown.Service
         /// <param name="isSuccess">성공 또는 실패 여부</param>
         private void ApplySuccessAndFailureCount(bool isSuccess)
         {
-#if (false) // Count 를 struct 로 선언했을 때는 이렇게 해야 정상적으로 값이 들어간다    -> 왜?
-            Count cnt = currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET];
-            cnt.IncreaseCount(isSuccess);
-            currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET] = cnt;
-
-#else       // Count 를 class 로 선언했을 때는 이렇게 해도 정상적으로 값이 증가한다
-            CurrentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET].IncreaseCount(isSuccess);
-
-#endif
+            currentMember.PlayCountList[gameLevelManager.Level + LEVEL_INDEX_OFFSET].IncreaseCount(isSuccess);
         }
 
         private int GetUserInputNumber()
         {
-            int stepIndex = this.TryCount + TRY_COUNT_INDEX_OFFSET;
+            int stepIndex = tryCount + TRY_COUNT_INDEX_OFFSET;
             int remains = gameLevelManager.TargetRemains;
 
             int min = gameLevelManager.GuessNumberMin;
@@ -117,37 +109,45 @@ namespace UpAndDown.Service
         private int ValidateUserInput(int min, int max)
         {
             int readUserNumber;
+            bool isValid;
 
-            while (!int.TryParse(Console.ReadLine(), out readUserNumber) ||
-                   readUserNumber < min || readUserNumber > max)
+            do
             {
-                if (readUserNumber == 0)
+                isValid = int.TryParse(Console.ReadLine(), out readUserNumber);
+
+                if(!isValid)
+                {
+                    Console.Write("잘못된 형식입니다. 숫자를 입력해주세요: ");
+                }
+                else if (readUserNumber == 0)
                 {
                     throw new ExitGameByUserException("유저가 게임을 포기했습니다 !!");
                 }
+                else if (readUserNumber < min || readUserNumber > max)
+                {
+                    Console.Write("범위를 벗어났습니다. 다시 입력해주세요: ");
+                    isValid = false;
+                }
+            } while (!isValid);
 
-                Console.WriteLine("잘못된 형식이거나 범위를 벗어났습니다. " +
-                                  $"다시 입력해주세요 ({min}~{max}).");
-            }
-
-            this.TryCount++;
+            tryCount++;
 
             return readUserNumber;
         }
 
-        private void DisplayResultMessage(Judgement result)
+        private void DisplayResultMessage(JudgementEnum result)
         {
             switch (result)
             {
-                case Judgement.InputIsHigherThanTarget:
+                case JudgementEnum.InputIsHigherThanTarget:
                     Console.WriteLine($"입력한 값이 목표값보다 큽니다.");
                     break;
 
-                case Judgement.InputIsLowerThanTarget:
+                case JudgementEnum.InputIsLowerThanTarget:
                     Console.WriteLine($"입력한 값이 목표값보다 작습니다.");
                     break;
 
-                case Judgement.Equal:
+                case JudgementEnum.Equal:
                     Console.WriteLine("정답입니다!");
                     break;
 

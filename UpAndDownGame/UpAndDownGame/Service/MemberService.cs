@@ -5,7 +5,7 @@ using System.Linq;
 using UpAndDown.Game.Enum;
 using UpAndDown.Interface;
 using UpAndDown.User;
-using UpAndDown.User.Model;
+using UpAndDown.Game.Model;
 
 using static UpAndDown.CustomException.CustomExceptions;
 
@@ -20,7 +20,7 @@ namespace UpAndDown.Service
 
         public void ReadMembersInformation()
         {
-            this.Members = ReadMemberFile();
+            Members = ReadMemberFile();
         }
 
         private void SelectMember()
@@ -34,9 +34,9 @@ namespace UpAndDown.Service
                 name = Console.ReadLine();
             } while (string.IsNullOrEmpty(name));
 
-            this.CurrentMember = SelectMemberByName(name);
+            CurrentMember = SelectMemberByName(name);
 
-            DisplayMemberInformation(this.CurrentMember);
+            DisplayMemberInformation(CurrentMember);
 
             Members.Add(CurrentMember);
 
@@ -48,7 +48,7 @@ namespace UpAndDown.Service
             Console.Clear();
 
             Member? currentMember = null;
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 string displayString = "";
                 if (member.Name == name && currentMember == null)
@@ -81,7 +81,7 @@ namespace UpAndDown.Service
 
             bool isNotExistName = true;
             Member? selectedMember = null;
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 string displayString;
                 if (member.Name == name && isNotExistName)
@@ -103,7 +103,7 @@ namespace UpAndDown.Service
             }
 
             Assert.IsNotNull(selectedMember);
-            if (this.Members.Remove(selectedMember.Value))
+            if (Members.Remove(selectedMember.Value))
             {
                 UpdateMembersInformation();
                 Console.WriteLine($"{name} 사용자가 정상적으로 삭제되었습니다.");
@@ -119,7 +119,7 @@ namespace UpAndDown.Service
             int n = 1;
             Console.WriteLine();
             Console.WriteLine($"Name: {member.Name,-12}");
-            foreach (Count cnt in member.PlayCountList)
+            foreach (PlayCount cnt in member.PlayCountList)
             {
                 Console.WriteLine($"[난이도{n++}] Success:{cnt.Success,3}, \tFailure:{cnt.Failure,3}, \tTotal:{cnt.Total,3}");
             }
@@ -131,7 +131,7 @@ namespace UpAndDown.Service
             {
                 Name = name,
                 PlayCountList = Enumerable.Range(1, 5)
-                    .Select(level => new Count
+                    .Select(level => new PlayCount
                     (
                         level: level,
                         success: 0,
@@ -150,23 +150,23 @@ namespace UpAndDown.Service
 
         public void SaveCurrentMember(Member member)
         {
-            this.Members.Remove(CurrentMember);
+            Members.Remove(CurrentMember);
 
             CurrentMember = member;
 
-            this.Members.Add(member);
+            Members.Add(member);
 
             UpdateMembersInformation();
         }
 
         private void UpdateMembersInformation()
         {
-            UpdateMemberToFile(this.Members);
+            UpdateMemberToFile(Members);
         }
 
         public void HandleMemberSelection()
         {
-            MemberMenu inputMenu;
+            MemberMenuEnum inputMenu;
             do
             {
                 DisplayMemberMenu();
@@ -174,11 +174,11 @@ namespace UpAndDown.Service
                 inputMenu = SelectMemberMenu();
                 switch (inputMenu)
                 {
-                    case MemberMenu.Select:
+                    case MemberMenuEnum.Select:
                         SelectMember();
                         break;
 
-                    case MemberMenu.Delete:
+                    case MemberMenuEnum.Delete:
                         try
                         {
                             DeleteMember();
@@ -189,7 +189,7 @@ namespace UpAndDown.Service
                         }
                         break;
 
-                    case MemberMenu.Exit:
+                    case MemberMenuEnum.Exit:
                         throw new ExitGameByUserException("게임을 종료합니다 !!!");
 
                     default:
@@ -199,7 +199,7 @@ namespace UpAndDown.Service
 
                 Console.WriteLine();
 
-            } while (inputMenu != MemberMenu.Select);
+            } while (inputMenu != MemberMenuEnum.Select);
 
         }
 
@@ -217,7 +217,7 @@ namespace UpAndDown.Service
 
         private void DisplayMembersAll()
         {
-            foreach (Member member in this.Members)
+            foreach (Member member in Members)
             {
                 Console.WriteLine($"{member.Name, 15}: Total PlayCount: {member.PlayCountList.Sum(count => count.Total)}");
             }
@@ -225,22 +225,22 @@ namespace UpAndDown.Service
             Console.WriteLine();
         }
 
-        private MemberMenu SelectMemberMenu()
+        private MemberMenuEnum SelectMemberMenu()
         {
             if (!int.TryParse(Console.ReadLine(), out int input))
             {
                 Console.WriteLine("입력값이 잘못되었습니다. 숫자를 입력해주세요.");
-                return MemberMenu.Invalid;
+                return MemberMenuEnum.Invalid;
             }
 
             switch(input)
             {
-                case 1: return MemberMenu.Select;
-                case 2: return MemberMenu.Delete;
-                case 0: return MemberMenu.Exit;
+                case 1: return MemberMenuEnum.Select;
+                case 2: return MemberMenuEnum.Delete;
+                case 0: return MemberMenuEnum.Exit;
                 default:
                     Console.WriteLine("유효하지 않은 메뉴입니다. 다시 시도해주세요.");
-                    return MemberMenu.Invalid;
+                    return MemberMenuEnum.Invalid;
             }
         }
     }
