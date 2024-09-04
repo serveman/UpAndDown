@@ -68,10 +68,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomException\CustomExceptions.cs" />
-    <Compile Include="Game\Enum\MemberMenu.cs" />
+    <Compile Include="Game\Enum\MemberMenuEnum.cs" />
     <Compile Include="Game\Initialize\GameInitializer.cs" />
-    <Compile Include="Game\Model\TargetValue.cs" />
-    <Compile Include="Game\Enum\Judgement.cs" />
+    <Compile Include="Game\Model\TargetValueStruct.cs" />
+    <Compile Include="Game\Enum\JudgementEnum.cs" />
     <Compile Include="Core\Domain\GameLevelManager.cs" />
     <Compile Include="Core\Domain\JudgementManager.cs" />
     <Compile Include="Interface\IMemberService.cs" />
@@ -94,8 +94,8 @@
     </Compile>
     <Compile Include="Service\MemberService.cs" />
     <Compile Include="User\IO\MemberIO.cs" />
-    <Compile Include="User\Model\Count.cs" />
-    <Compile Include="User\Model\Member.cs" />
+    <Compile Include="Game\Model\PlayCount.cs" />
+    <Compile Include="Game\Model\MemberStruct.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -14,12 +14,12 @@ namespace UpAndDown.Interface
         /// <returns>
         /// 비교 결과를 나타내는 Judgement enum:
         /// <list type="bullet">
-        /// <item><description><see cref="Judgement.InputIsHigherThanTarget"/>: 입력값이 목표값보다 큼.</description></item>
-        /// <item><description><see cref="Judgement.InputIsLowerThanTarget"/>: 입력값이 목표값보다 작음.</description></item>
-        /// <item><description><see cref="Judgement.Equal"/>: 입력값이 목표값과 같음.</description></item>
+        /// <item><description><see cref="JudgementEnum.InputIsHigherThanTarget"/>: 입력값이 목표값보다 큼.</description></item>
+        /// <item><description><see cref="JudgementEnum.InputIsLowerThanTarget"/>: 입력값이 목표값보다 작음.</description></item>
+        /// <item><description><see cref="JudgementEnum.Equal"/>: 입력값이 목표값과 같음.</description></item>
         /// </list>
         /// </returns>
-        Judgement JudgeUpOrDownResult(int userInput, int targetValue);
+        JudgementEnum JudgeUpOrDownResult(int userInput, int targetValue);
 
         /// <summary>
         /// 결과를 판정하는 메서드
@@ -32,13 +32,13 @@ namespace UpAndDown.Interface
         /// <returns>
         /// 비교 결과를 나타내는 Judgement enum:
         /// <list type="bullet">
-        /// <item><description><see cref="Judgement.InputIsHigherThanTarget"/>: 입력값이 가장 가까이 있는 목표값보다 큼.</description></item>
-        /// <item><description><see cref="Judgement.InputIsLowerThanTarget"/>: 입력값이 가장 가까이 있는 목표값보다 작음.</description></item>
-        /// <item><description><see cref="Judgement.Equal"/>: 입력값이 목표값과 같음.</description></item>
+        /// <item><description><see cref="JudgementEnum.InputIsHigherThanTarget"/>: 입력값이 가장 가까이 있는 목표값보다 큼.</description></item>
+        /// <item><description><see cref="JudgementEnum.InputIsLowerThanTarget"/>: 입력값이 가장 가까이 있는 목표값보다 작음.</description></item>
+        /// <item><description><see cref="JudgementEnum.Equal"/>: 입력값이 목표값과 같음.</description></item>
         /// </list>
         /// </returns>
-        Judgement JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValue> targetValues);
+        JudgementEnum JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValueStruct> targetValues);
 
-        bool IsSolvedTargetAll(HashSet<TargetValue> targetValues);
+        bool IsSolvedTargetAll(HashSet<TargetValueStruct> targetValues);
     }
 }

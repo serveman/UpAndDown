@@ -11,9 +11,9 @@ namespace UpAndDown.Game
     {
         public UpAndDownGame()
         {
-            this.Initialize();
+            Initialize();
 
-            this.Run();
+            Run();
         }
 
         private void Run()
@@ -32,6 +32,13 @@ namespace UpAndDown.Game
             {
                 Console.WriteLine(e.Message);
             }
+            finally
+            {
+                Console.WriteLine();
+                Console.Write("종료하려면 엔터 키를 입력해주세요: ");
+                Console.ReadLine();
+            }
+
         }
 
         private void Initialize()

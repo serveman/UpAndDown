@@ -1,4 +1,4 @@
-﻿using UpAndDown.User.Model;
+﻿using UpAndDown.Game.Model;
 
 namespace UpAndDown.Interface
 {

@@ -16,26 +16,26 @@ namespace UpAndDown.Core.Domain
             this.gameLevelManager = gameLevelManager;
         }
 
-        public Judgement JudgeUpOrDownResult(int userInput, int targetValue)
+        public JudgementEnum JudgeUpOrDownResult(int userInput, int targetValue)
         {
             if (userInput == targetValue)
             {
-                return Judgement.Equal;
+                return JudgementEnum.Equal;
             }
 
             return userInput > targetValue
-                ? Judgement.InputIsHigherThanTarget
-                : Judgement.InputIsLowerThanTarget;
+                ? JudgementEnum.InputIsHigherThanTarget
+                : JudgementEnum.InputIsLowerThanTarget;
         }
 
-        public Judgement JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValue> targetValues)
+        public JudgementEnum JudgeUpOrDownResultMulti(int userInput, HashSet<TargetValueStruct> targetValues)
         {
             if (targetValues == null)
             {
                 throw new ArgumentNullException(nameof(targetValues), "TargetValues 는 null 이면 안된다 !!!");
             }
 
-            TargetValue mostCloseTarget = targetValues
+            TargetValueStruct mostCloseTarget = targetValues
                 .Where(tv => !tv.IsSolved)
                 .OrderBy(tv => Math.Abs(userInput - tv.Value))
                 .FirstOrDefault();
@@ -47,10 +47,10 @@ namespace UpAndDown.Core.Domain
                 // todo: List 를 이용해서 값을 직접 변경하는 방법이 나은지???
                 if (targetValues.Remove(mostCloseTarget))
                 {
-                    targetValues.Add(new TargetValue { Value = mostCloseTarget.Value, IsSolved = true });
+                    targetValues.Add(new TargetValueStruct { Value = mostCloseTarget.Value, IsSolved = true });
                     gameLevelManager.UpdateTargetRemains();
 
-                    return Judgement.Equal;
+                    return JudgementEnum.Equal;
                 }
                 else
                 {
@@ -59,11 +59,11 @@ namespace UpAndDown.Core.Domain
             }
 
             return mostCloseDifference > 0
-                ? Judgement.InputIsHigherThanTarget
-                : Judgement.InputIsLowerThanTarget;
+                ? JudgementEnum.InputIsHigherThanTarget
+                : JudgementEnum.InputIsLowerThanTarget;
         }
 
-        public bool IsSolvedTargetAll(HashSet<TargetValue> targetValues)
+        public bool IsSolvedTargetAll(HashSet<TargetValueStruct> targetValues)
         {
             return targetValues.All(tv => tv.IsSolved);
         }
